@@ -66,4 +66,5 @@ public class GameList {
     @Column(name = "stadium", nullable = false)
     private String stadium;
 
+
 }
