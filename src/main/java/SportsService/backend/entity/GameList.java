@@ -66,5 +66,12 @@ public class GameList {
     @Column(name = "stadium", nullable = false)
     private String stadium;
 
+    @Column(name = "score_board")
+    private String scoreBoard;
 
+    @Column(name = "record")
+    private String record;
+
+    @Column(name = "lineup")
+    private String lineup;
 }
