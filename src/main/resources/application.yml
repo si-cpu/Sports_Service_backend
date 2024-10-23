@@ -2,7 +2,7 @@ spring:
   application:
     name: backend
   datasource:
-    url: jdbc:mysql://localhost:3306/jpa?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/sports_service?serverTimezone=Asia/Seoul
     username: root
     password: mysql
     driver-class-name: com.mysql.cj.jdbc.Driver
