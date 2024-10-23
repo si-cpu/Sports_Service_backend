@@ -2,6 +2,7 @@ package SportsService.backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -30,7 +31,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // CSRF 공격 방지 비활성화
-        http.csrf(csrfConfig -> csrfConfig.disable());
+        http.csrf(csrfConfig -> csrfConfig.disable())
+                .cors(Customizer.withDefaults());
 
         // 모든 요청에 대해 인증을 요구하지 않음
         http.authorizeHttpRequests(
