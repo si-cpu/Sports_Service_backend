@@ -10,5 +10,4 @@ import lombok.ToString;
 public class LoginRequestDto {
     private String nickName;
     private String password;
-    private Long autoLogin;
 }
