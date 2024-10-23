@@ -1,12 +1,17 @@
 package SportsService.backend.service;
 
+import SportsService.backend.dto.request.LoginRequestDto;
 import SportsService.backend.dto.request.SignUpRequestDto;
 import SportsService.backend.entity.User;
 import SportsService.backend.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 /**
  * 회원 관련 서비스 클래스입니다.
@@ -42,6 +47,27 @@ public class MemberService {
         User user = dto.toUser(encoder);
         // 데이터베이스에 사용자 정보 저장
         userRepository.save(user);
+    }
+
+    public boolean isValidNickname(SignUpRequestDto dto) {
+        Optional<User> user = userRepository.findByNickName(dto.getNickName());
+        return user.isPresent();
+    }
+
+    public boolean isValidEmail(SignUpRequestDto dto) {
+        Optional<User> user = userRepository.findByEmail(dto.getEmail());
+        return user.isPresent();
+    }
+
+    public HttpSession authenticate(LoginRequestDto dto, HttpServletRequest request) {
+        Optional<User> foundUser= userRepository.findByNickName(dto.getNickName());
+        boolean userValid=foundUser.filter(user -> encoder.matches(dto.getPassword(), user.getPassword())).isPresent();
+        if(userValid){
+            HttpSession session =request.getSession(true);
+            session.setAttribute("user", foundUser);
+            return session;
+        }
+        return null;
     }
 }
 

@@ -77,6 +77,10 @@ public class User {
     @Column(name = "login_method", nullable = false)
     private String loginMethod;
 
+    @Column(name="profile")
+    private String profile;
+
+
     /**
      * 사용자가 선호하는 MLB 팀입니다.
      */
