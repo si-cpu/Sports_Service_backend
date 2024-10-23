@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 2024-10-23
  */
 @RestController
-@RequestMapping("/sign_up")
+@RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController {
 
