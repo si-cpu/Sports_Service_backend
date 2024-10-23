@@ -24,13 +24,13 @@ public class User {
     @Column(name = "user_key")
     private Long userKey;
 
-    @Column(name = "nick_name", nullable = false, unique = true)
+    @Column(name = "nick_name", nullable = false)
     private String nickName;
 
     @Column(name="password", nullable = false)
     private String password;
 
-    @Column(name="email", nullable = false, unique = true)
+    @Column(name="email", nullable = false)
     private String email;
 
     @Column(name="reg_date", nullable = false)
@@ -39,6 +39,12 @@ public class User {
 
     @Column(name="auth", nullable = false)
     private String auth;
+
+    @Column(name="profile")
+    private String profile;
+
+    @Column(name="login_method", nullable = false)
+    private String loginMethod;
 
     @Column(name="mlb_team")
     private String mlbTeam;

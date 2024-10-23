@@ -45,6 +45,6 @@ dependencies {
 	implementation 'jakarta.mail:jakarta.mail-api:2.1.2'
 }
 
-tasks.named('test') {
+tasks.named('test' ) {
 	useJUnitPlatform()
 }
