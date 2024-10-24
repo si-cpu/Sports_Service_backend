@@ -4,8 +4,6 @@ import SportsService.backend.dto.request.LoginRequestDto;
 import SportsService.backend.dto.request.SignUpRequestDto;
 import SportsService.backend.entity.User;
 import SportsService.backend.repository.UserRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +14,7 @@ import java.util.Optional;
 /**
  * 회원 관련 서비스 클래스입니다.
  * 회원가입 로직을 처리하고, 사용자의 정보를 데이터베이스에 저장합니다.
+ * 또한, 로그인 시 사용자의 인증을 수행합니다.
  *
  * @author minus43
  * @since 2024-10-23
@@ -49,25 +48,39 @@ public class MemberService {
         userRepository.save(user);
     }
 
+    /**
+     * 닉네임 중복 여부를 확인하는 메서드입니다.
+     * 데이터베이스에서 해당 닉네임을 가진 사용자가 있는지 확인합니다.
+     *
+     * @param dto 닉네임을 담은 DTO 객체
+     * @return 닉네임이 중복되면 true, 중복되지 않으면 false
+     */
     public boolean isValidNickname(SignUpRequestDto dto) {
         Optional<User> user = userRepository.findByNickName(dto.getNickName());
         return user.isPresent();
     }
 
+    /**
+     * 이메일 중복 여부를 확인하는 메서드입니다.
+     * 데이터베이스에서 해당 이메일을 가진 사용자가 있는지 확인합니다.
+     *
+     * @param dto 이메일을 담은 DTO 객체
+     * @return 이메일이 중복되면 true, 중복되지 않으면 false
+     */
     public boolean isValidEmail(SignUpRequestDto dto) {
         Optional<User> user = userRepository.findByEmail(dto.getEmail());
         return user.isPresent();
     }
 
-    public HttpSession authenticate(LoginRequestDto dto, HttpServletRequest request) {
-        Optional<User> foundUser= userRepository.findByNickName(dto.getNickName());
-        boolean userValid=foundUser.filter(user -> encoder.matches(dto.getPassword(), user.getPassword())).isPresent();
-        if(userValid){
-            HttpSession session =request.getSession(true);
-            session.setAttribute("user", foundUser);
-            return session;
-        }
-        return null;
+    /**
+     * 사용자의 로그인 인증을 처리하는 메서드입니다.
+     * 닉네임으로 사용자를 찾고, 입력된 비밀번호와 저장된 암호화된 비밀번호를 비교하여 일치 여부를 확인합니다.
+     *
+     * @param dto 로그인 요청 데이터를 담은 DTO 객체
+     * @return 인증 성공 시 true, 실패 시 false
+     */
+    public boolean authenticate(LoginRequestDto dto) {
+        Optional<User> foundUser = userRepository.findByNickName(dto.getNickName());
+        return foundUser.isPresent() && encoder.matches(dto.getPassword(), foundUser.get().getPassword());
     }
 }
-
