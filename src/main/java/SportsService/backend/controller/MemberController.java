@@ -37,10 +37,12 @@ public class MemberController {
      * @param dto 회원가입 요청 데이터를 담은 DTO 객체
      * @return 성공 메시지를 담은 ResponseEntity 객체
      */
-    @PostMapping("/register")
+    @PostMapping("/signup")
     public ResponseEntity<String> register(@RequestBody SignUpRequestDto dto) {
-        memberService.register(dto);
-        return ResponseEntity.ok().body("성공");
+        if(memberService.signUp(dto)){
+            return ResponseEntity.ok().body("success");
+        }
+        return ResponseEntity.badRequest().body("failed");
     }
 
     /**
@@ -54,9 +56,9 @@ public class MemberController {
     @PostMapping("/valid_id")
     public ResponseEntity<String> validNickname(@RequestBody SignUpRequestDto dto) {
         if (memberService.isValidNickname(dto)) {
-            return ResponseEntity.badRequest().body("중복");
+            return ResponseEntity.badRequest().body("failed");
         }
-        return ResponseEntity.ok().body("가능");
+        return ResponseEntity.ok().body("success");
     }
 
     /**
@@ -70,9 +72,9 @@ public class MemberController {
     @PostMapping("/valid_email")
     public ResponseEntity<String> validEmail(@RequestBody SignUpRequestDto dto) {
         if (memberService.isValidEmail(dto)) {
-            return ResponseEntity.badRequest().body("중복");
+            return ResponseEntity.badRequest().body("failed");
         }
-        return ResponseEntity.ok().body("가능");
+        return ResponseEntity.ok().body("success");
     }
 
     /**
@@ -87,45 +89,12 @@ public class MemberController {
      */
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequestDto dto, HttpServletRequest request, HttpServletResponse response) {
-        if (!memberService.authenticate(dto)) {
-            return ResponseEntity.badRequest().body("거부");
-        } else {
-            HttpSession session = request.getSession();
-            session.setAttribute("member", dto.getNickName());  // 세션에 사용자 정보 저장
-
-            // 세션 ID를 쿠키로 설정 (JSESSIONID)
-            Cookie cookie = new Cookie("JSESSIONID", session.getId());  // 세션 ID 쿠키
-            cookie.setHttpOnly(true);  // 자바스크립트에서 접근 불가능하게 설정
-            cookie.setPath("/");       // 모든 경로에서 유효
-
-            // 자동 로그인 설정 여부에 따라 Max-Age 설정
-            if (dto.getAutoLogin().equals("true")) {
-                cookie.setMaxAge(60 * 60 * 24 * 7);  // 7일 동안 유지 (자동 로그인)
-            } else {
-                cookie.setMaxAge(-1);  // 세션 쿠키로 설정 (브라우저 닫으면 만료)
+        if (memberService.authenticate(dto)) {
+            if (memberService.makeCookie(dto, request, response)) {
+                return ResponseEntity.ok().body("success");
             }
-
-            response.addCookie(cookie);  // 쿠키 추가
-            return ResponseEntity.ok().body(dto.getAutoLogin().equals("true") ? "자동 로그인 성공" : "로그인 성공");
         }
-    }
-
-    /**
-     * 로그인 상태를 확인하는 메서드입니다.
-     * 현재 세션에 로그인된 사용자가 있는지 확인하고,
-     * 로그인 상태인 경우 "현재 로그인 상태입니다." 메시지를 반환합니다.
-     *
-     * @param request HTTP 요청 객체
-     * @return 로그인 상태 메시지를 담은 ResponseEntity 객체
-     */
-    @GetMapping("/check_login")
-    public ResponseEntity<String> checkLoginStatus(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);  // 세션 확인
-        if (session != null && session.getAttribute("member") != null) {
-            return ResponseEntity.ok("현재 로그인 상태입니다.");
-        } else {
-            return ResponseEntity.badRequest().body("로그인되지 않았습니다.");
-        }
+        return ResponseEntity.badRequest().body("failed");
     }
 
     /**
@@ -138,18 +107,9 @@ public class MemberController {
      */
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();  // 세션 무효화
+        if(memberService.deleteCookie(request,response)){
+            return ResponseEntity.ok().body("success");
         }
-
-        // JSESSIONID 쿠키 삭제
-        Cookie cookie = new Cookie("JSESSIONID", null);
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(0);  // 쿠키 즉시 만료
-        cookie.setPath("/");
-        response.addCookie(cookie);
-
-        return ResponseEntity.ok("로그아웃 성공");
+        return ResponseEntity.badRequest().body("failed");
     }
 }
