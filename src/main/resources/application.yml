@@ -2,7 +2,7 @@ spring:
   application:
     name: backend
   datasource:
-    url: jdbc:mysql://localhost:3306/jpa?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/sports_service?serverTimezone=Asia/Seoul
     username: root
     password: mysql
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -11,9 +11,10 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: update
-#    properties:
-#      hibernate:
-#        format_sql: true
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+
 
 server:
   port: 8181
@@ -23,9 +24,8 @@ server:
 logging:
   level:
     root: info
-    com:
-      spring:
-        jpa: debug
+    SportsService:
+      backend: debug
     org:
       hibernate:
         SQL: debug
