@@ -1,9 +1,12 @@
 package SportsService.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 이 클래스는 시스템 내에서 사용자를 나타내는 엔티티입니다.
@@ -68,7 +71,8 @@ public class User {
      * 이 값은 필수이며 null일 수 없습니다.
      */
     @Column(name = "auth", nullable = false)
-    private String auth;
+    @Builder.Default
+    private String auth="COMMON";
 
     /**
      * 사용자가 로그인할 때 사용한 방법(예: EMAIL, KAKAO, NAVER)입니다.
@@ -130,5 +134,10 @@ public class User {
      */
     @Column(name = "vwo_team")
     private String vwoTeam;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Board> boards = new ArrayList<>();
+
 
 }
