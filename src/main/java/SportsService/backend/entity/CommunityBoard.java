@@ -45,14 +45,18 @@ public class CommunityBoard {
     @Column(name = "good_board", nullable = false)
     private long goodBoard;
 
+    ///////////////writer 임시항목////////////////////////
+    @Column(name = "writer", nullable = false)
+    private String writer;
+
     public CommunityBoard(CommunityBoardWriteRequestDTO dto) {
-        //this.writer = dto.getWriter();
+        this.writer = dto.getWriter();
         this.title = dto.getTitle();
         this.content = dto.getContent();
     }
 
     public void newWrite(CommunityBoardWriteRequestDTO dto) {
-        //this.writer = dto.getWriter();
+        this.writer = dto.getWriter();
         this.title = dto.getTitle();
         this.content = dto.getContent();
     }

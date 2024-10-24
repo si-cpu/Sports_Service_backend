@@ -17,6 +17,7 @@ public class CommunityBoardListResponceDTO {
     //private final int userKey;
 
     private final String listTitle; //노출되는 글자수 제한
+    private final String writer;
     //private final String listContent
 
     //private final String regDate;
@@ -27,7 +28,7 @@ public class CommunityBoardListResponceDTO {
 
         this.listTitle = makeBoardTitle(board.getTitle());
 
-        //this.writer = board.getwriter();
+        this.writer = board.getWriter();
 
         //this.regDate = makeRegDateString(board.getRegTime());
 
@@ -47,7 +48,7 @@ public class CommunityBoardListResponceDTO {
     }
 
 
-    private String makeRegDateString(LocalDateTime regTime) {
+    public static String makeRegDateString(LocalDateTime regTime) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         return dtf.format(regTime);

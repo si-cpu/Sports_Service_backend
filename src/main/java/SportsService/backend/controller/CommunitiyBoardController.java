@@ -2,6 +2,7 @@ package SportsService.backend.controller;
 
 
 import SportsService.backend.dto.request.CommunityBoardWriteRequestDTO;
+import SportsService.backend.dto.response.CommunityBoardDetailResponseDTO;
 import SportsService.backend.dto.response.CommunityBoardListResponceDTO;
 import SportsService.backend.service.CommunityBoardService;
 import lombok.RequiredArgsConstructor;
@@ -9,10 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLOutput;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/communityBoard")
 @RequiredArgsConstructor
 public class CommunitiyBoardController {
@@ -26,12 +26,12 @@ public class CommunitiyBoardController {
                 communityBoardService.getList();
         model.addAttribute("CommList", list);
 
-        return "sportsService/list";
+        return "SportsService/list";
     }
 
     @GetMapping("/write")
     public String write() {
-        return "sportsService/write";
+        return "SportsService/write";
     }
 
     @PostMapping("/write")
@@ -46,8 +46,17 @@ public class CommunitiyBoardController {
     public String detail(@PathVariable long boardNumber) {
         System.out.println("board number =" + boardNumber);
 
-        communityBoardService.getDetail(boardNumber);
+        CommunityBoardDetailResponseDTO dto = communityBoardService.getDetail(boardNumber);
 
-        return null;
+        return "SportsService/detail";
     }
+
+    @PostMapping("/delete")
+    public String delete(@RequestParam long boardNum) {
+
+        communityBoardService.delete(boardNum);
+
+        return "redirect:CommunityBoard/list";
+    }
+
 }

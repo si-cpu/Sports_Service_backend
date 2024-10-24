@@ -10,9 +10,9 @@ import lombok.ToString;
 
 public class CommunityBoardWriteRequestDTO {
 
-    //private String writer;
     private String title;
     private String content;
+    private String writer;
 
 
 }
