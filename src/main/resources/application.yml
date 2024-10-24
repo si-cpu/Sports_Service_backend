@@ -14,6 +14,17 @@ spring:
   jackson:
     property-naming-strategy: SNAKE_CASE
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+
+
+
+
+
 
 
 server:

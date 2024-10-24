@@ -55,11 +55,6 @@ public class SignUpRequestDto {
     private String klTeam;
 
     /**
-     * 사용자가 선호하는 프리미어리그 팀입니다.
-     */
-    private String plTeam;
-
-    /**
      * 사용자가 선호하는 KBL 팀입니다.
      */
     private String kblTeam;
