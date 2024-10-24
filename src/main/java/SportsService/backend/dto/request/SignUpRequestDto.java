@@ -102,7 +102,6 @@ public class SignUpRequestDto {
                 .vmanTeam(vmanTeam)
                 .vwoTeam(vwoTeam)
                 .loginMethod(LoginMethod.EMAIL.toString())
-                .auth("COMMON")
                 .build();
     }
 }
