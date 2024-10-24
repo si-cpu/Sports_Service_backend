@@ -46,6 +46,10 @@ dependencies {
 
 	// json 주고받을 때 snake-camel case 간 변환
 	implementation 'com.fasterxml.jackson.core:jackson-core:2.18.0'
+
+	//스프링 부트 애플리케이션의 모니터링과 관리 기능을 제공하는 도구
+	implementation 'org.springframework.boot:spring-boot-starter-actuator:3.3.4'
+
 }
 
 tasks.named('test' ) {
