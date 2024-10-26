@@ -40,6 +40,15 @@ public class SignUpRequestDto {
     private String email;
 
     /**
+     * 사용자의 로그인 방식입니다.
+     * 이 값은 필수이며 null일 수 없습니다.
+     * LoginMethod의 값 중에서 하나를 선택합니다.
+     * 로그인하는 방식에 따라 정해집니다.
+     * @see LoginMethod
+     */
+    private String loginMethod;
+
+    /**
      * 사용자가 선호하는 MLB 팀입니다.
      */
     private String mlbTeam;
@@ -78,7 +87,7 @@ public class SignUpRequestDto {
      * 로그인 방법을 나타내는 열거형입니다.
      * EMAIL, KAKAO, NAVER 방식으로 구분됩니다.
      */
-    private enum LoginMethod {
+    public enum LoginMethod {
         EMAIL, KAKAO, NAVER
     }
 
@@ -101,7 +110,20 @@ public class SignUpRequestDto {
                 .nbaTeam(nbaTeam)
                 .vmanTeam(vmanTeam)
                 .vwoTeam(vwoTeam)
-                .loginMethod(LoginMethod.EMAIL.toString())
+                .loginMethod(makeloginMethod())
                 .build();
+    }
+
+    /**
+     * 로그인 방식을 반환합니다. loginMethod가 null이면 기본적으로 EMAIL 방식을 반환합니다.
+     *
+     * @return 지정된 로그인 방식이 있으면 그 값을, 없으면 기본값 EMAIL을 반환
+     */
+    public String makeloginMethod() {
+        if (loginMethod != null) {
+            return loginMethod;
+        } else {
+            return LoginMethod.EMAIL.toString();
+        }
     }
 }
