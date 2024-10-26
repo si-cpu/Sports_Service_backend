@@ -18,7 +18,7 @@ import java.util.Optional;
 /**
  * 회원 관련 서비스 클래스입니다.
  * 회원가입 로직을 처리하고, 사용자의 정보를 데이터베이스에 저장합니다.
- * 또한, 로그인 시 사용자의 인증을 수행합니다.
+ * 또한, 로그인 시 사용자의 인증을 수행하고, 세션 및 쿠키 설정을 관리합니다.
  *
  * @author minus43
  * @since 2024-10-23
@@ -44,12 +44,11 @@ public class MemberService {
      * 비밀번호를 암호화하여 데이터베이스에 저장합니다.
      *
      * @param dto 회원가입 요청 데이터를 담은 DTO 객체
+     * @return 회원가입 성공 시 true, 실패 시 false
      */
     public boolean signUp(SignUpRequestDto dto) {
         try {
-            // SignUpRequestDto를 User 엔티티로 변환하고 비밀번호 암호화
             User user = dto.toUser(encoder);
-            // 데이터베이스에 사용자 정보 저장
             userRepository.save(user);
             return true;
         } catch (Exception e) {
@@ -71,7 +70,6 @@ public class MemberService {
         } catch (Exception e) {
             return false;
         }
-
     }
 
     /**
@@ -82,7 +80,7 @@ public class MemberService {
      * @return 이메일이 중복되면 true, 중복되지 않으면 false
      */
     public boolean isValidEmail(SignUpRequestDto dto) {
-        try{
+        try {
             Optional<User> user = userRepository.findByEmail(dto.getEmail());
             return user.isPresent();
         } catch (Exception e) {
@@ -102,39 +100,51 @@ public class MemberService {
         return foundUser.isPresent() && encoder.matches(dto.getPassword(), foundUser.get().getPassword());
     }
 
+    /**
+     * 로그인 시 세션 및 쿠키를 설정하는 메서드입니다.
+     * 세션에 사용자 정보를 저장하고, 쿠키를 설정하여 자동 로그인 여부에 따라 유지 기간을 설정합니다.
+     *
+     * @param dto 로그인 요청 데이터를 담은 DTO 객체
+     * @param request HTTP 요청 객체
+     * @param response HTTP 응답 객체
+     * @return 쿠키 설정 성공 시 true, 실패 시 false
+     */
     public boolean makeCookie(LoginRequestDto dto, HttpServletRequest request, HttpServletResponse response) {
         try {
             HttpSession session = request.getSession();
-            session.setAttribute("member", dto.getNickName());  // 세션에 사용자 정보 저장
+            session.setAttribute("member", dto.getNickName());
 
-            // 세션 ID를 쿠키로 설정 (JSESSIONID)
-            Cookie cookie = new Cookie("JSESSIONID", session.getId());  // 세션 ID 쿠키
-            cookie.setHttpOnly(true);  // 자바스크립트에서 접근 불가능하게 설정
-            cookie.setPath("/");       // 모든 경로에서 유효
+            Cookie cookie = new Cookie("JSESSIONID", session.getId());
+            cookie.setHttpOnly(true);
+            cookie.setPath("/");
 
-            // 자동 로그인 설정 여부에 따라 Max-Age 설정
-            if (dto.getAutoLogin().equals("true")) {
-                cookie.setMaxAge(60 * 60 * 24 * 7);  // 7일 동안 유지 (자동 로그인)
+            if ("true".equals(dto.getAutoLogin())) {
+                cookie.setMaxAge(60 * 60 * 24 * 7);  // 7일 동안 유지
             } else {
-                cookie.setMaxAge(-1);  // 세션 쿠키로 설정 (브라우저 닫으면 만료)
+                cookie.setMaxAge(-1);  // 세션 쿠키 설정
             }
 
-            response.addCookie(cookie);  // 쿠키 추가
+            response.addCookie(cookie);
             return true;
         } catch (Exception e) {
             return false;
         }
-
     }
 
+    /**
+     * 로그아웃 시 세션을 무효화하고 JSESSIONID 쿠키를 삭제하는 메서드입니다.
+     *
+     * @param request HTTP 요청 객체
+     * @param response HTTP 응답 객체
+     * @return 쿠키 삭제 성공 시 true, 실패 시 false
+     */
     public boolean deleteCookie(HttpServletRequest request, HttpServletResponse response) {
         try {
             HttpSession session = request.getSession(false);
             if (session != null) {
-                session.invalidate();  // 세션 무효화
+                session.invalidate();
             }
 
-            // JSESSIONID 쿠키 삭제
             Cookie cookie = new Cookie("JSESSIONID", null);
             cookie.setHttpOnly(true);
             cookie.setMaxAge(0);  // 쿠키 즉시 만료

@@ -3,10 +3,8 @@ package SportsService.backend.controller;
 import SportsService.backend.dto.request.LoginRequestDto;
 import SportsService.backend.dto.request.SignUpRequestDto;
 import SportsService.backend.service.MemberService;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +14,9 @@ import org.springframework.web.bind.annotation.*;
  * 클라이언트로부터 회원가입, 로그인 등의 데이터를 받아 서비스 계층에 전달하고,
  * 처리 결과를 응답으로 반환합니다.
  *
- * @author minus43
  * @since 2024-10-23
+ * @see MemberService
+ * @author minus43
  */
 @RestController
 @RequestMapping("/member")
@@ -32,14 +31,14 @@ public class MemberController {
     /**
      * 회원가입 요청을 처리하는 메서드입니다.
      * 클라이언트로부터 전달된 회원가입 데이터를 받아 회원가입 로직을 수행하고,
-     * 성공 메시지를 반환합니다.
+     * 성공 또는 실패 메시지를 반환합니다.
      *
      * @param dto 회원가입 요청 데이터를 담은 DTO 객체
-     * @return 성공 메시지를 담은 ResponseEntity 객체
+     * @return 성공 메시지를 담은 ResponseEntity 객체, 실패 시 실패 메시지를 반환
      */
     @PostMapping("/signup")
     public ResponseEntity<String> register(@RequestBody SignUpRequestDto dto) {
-        if(memberService.signUp(dto)){
+        if (memberService.signUp(dto)) {
             return ResponseEntity.ok().body("success");
         }
         return ResponseEntity.badRequest().body("failed");
@@ -48,7 +47,7 @@ public class MemberController {
     /**
      * 닉네임 중복 여부를 확인하는 메서드입니다.
      * 클라이언트로부터 전달된 닉네임을 이용하여 중복 여부를 확인하고,
-     * 중복된 경우 "중복", 사용 가능한 경우 "가능" 메시지를 반환합니다.
+     * 중복된 경우 "failed", 사용 가능한 경우 "success" 메시지를 반환합니다.
      *
      * @param dto 닉네임을 담은 DTO 객체
      * @return 중복 여부를 담은 ResponseEntity 객체
@@ -64,7 +63,7 @@ public class MemberController {
     /**
      * 이메일 중복 여부를 확인하는 메서드입니다.
      * 클라이언트로부터 전달된 이메일을 이용하여 중복 여부를 확인하고,
-     * 중복된 경우 "중복", 사용 가능한 경우 "가능" 메시지를 반환합니다.
+     * 중복된 경우 "failed", 사용 가능한 경우 "success" 메시지를 반환합니다.
      *
      * @param dto 이메일을 담은 DTO 객체
      * @return 중복 여부를 담은 ResponseEntity 객체
@@ -85,7 +84,7 @@ public class MemberController {
      * @param dto 로그인 요청 데이터를 담은 DTO 객체
      * @param request HTTP 요청 객체
      * @param response HTTP 응답 객체
-     * @return 로그인 결과 메시지를 담은 ResponseEntity 객체
+     * @return 로그인 성공 시 "success" 메시지를 반환하고, 실패 시 "failed" 메시지를 반환
      */
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequestDto dto, HttpServletRequest request, HttpServletResponse response) {
@@ -103,11 +102,11 @@ public class MemberController {
      *
      * @param request HTTP 요청 객체
      * @param response HTTP 응답 객체
-     * @return 로그아웃 성공 메시지를 담은 ResponseEntity 객체
+     * @return 로그아웃 성공 시 "success" 메시지를 반환하고, 실패 시 "failed" 메시지를 반환
      */
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
-        if(memberService.deleteCookie(request,response)){
+        if (memberService.deleteCookie(request, response)) {
             return ResponseEntity.ok().body("success");
         }
         return ResponseEntity.badRequest().body("failed");

@@ -14,6 +14,8 @@ import java.util.List;
  * 사용자의 선호 스포츠 팀에 대한 정보도 담고 있습니다.
  * 이 엔티티는 데이터베이스의 "user" 테이블과 매핑됩니다.
  *
+ * 사용자와 게시판 게시물 및 댓글의 연관 관계를 관리합니다.
+ *
  * @author minus43
  * @since 2024-10-23
  */
@@ -135,9 +137,22 @@ public class User {
     @Column(name = "vwo_team")
     private String vwoTeam;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
+    /**
+     * 사용자가 작성한 게시글 목록입니다.
+     * 게시글이 삭제될 경우 해당 게시글들도 함께 삭제됩니다.
+     *
+     * @see Board
+     */
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Board> boards = new ArrayList<>();
 
-
+    /**
+     * 사용자가 작성한 댓글 목록입니다.
+     * 댓글이 삭제될 경우 해당 댓글들도 함께 삭제됩니다.
+     *
+     * @see Reply
+     */
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
+    private List<Reply> replies = new ArrayList<>();
 }
