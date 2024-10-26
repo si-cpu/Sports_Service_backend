@@ -4,6 +4,7 @@ import SportsService.backend.dto.request.LoginRequestDto;
 import SportsService.backend.dto.request.SignUpRequestDto;
 import SportsService.backend.entity.User;
 import SportsService.backend.repository.UserRepository;
+import SportsService.backend.utils.LoginUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -154,5 +157,19 @@ public class MemberService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    /**
+     * 사용자가 로그인 상태인지 확인하는 메서드입니다.
+     * 로그인 유틸리티를 사용하여 로그인 여부를 확인하고, 결과를 맵 형식으로 반환합니다.
+     *
+     * @param request HTTP 요청 객체
+     * @return 로그인 상태를 나타내는 맵, 로그인된 경우 닉네임을 포함
+     */
+    public Map<String, String> checkLogin(HttpServletRequest request) {
+        String isLogin = LoginUtils.isLogin(request);
+        Map<String, String> map = new HashMap<>();
+        map.put("username", isLogin);
+        return map;
     }
 }

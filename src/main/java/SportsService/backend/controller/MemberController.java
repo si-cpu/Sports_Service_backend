@@ -9,14 +9,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * 회원가입과 로그인 관련된 요청을 처리하는 컨트롤러 클래스입니다.
  * 클라이언트로부터 회원가입, 로그인 등의 데이터를 받아 서비스 계층에 전달하고,
  * 처리 결과를 응답으로 반환합니다.
  *
  * @since 2024-10-23
- * @see MemberService
  * @author minus43
+ * @see MemberService
  */
 @RestController
 @RequestMapping("/member")
@@ -108,6 +110,22 @@ public class MemberController {
     public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
         if (memberService.deleteCookie(request, response)) {
             return ResponseEntity.ok().body("success");
+        }
+        return ResponseEntity.badRequest().body("failed");
+    }
+
+    /**
+     * 로그인 상태를 확인하는 메서드입니다.
+     * 현재 사용자가 로그인 상태인지 확인하고, 로그인된 경우 닉네임을 포함한 정보를 반환합니다.
+     *
+     * @param request HTTP 요청 객체
+     * @return 로그인 상태를 담은 ResponseEntity 객체, 실패 시 "failed" 메시지를 반환
+     */
+    @GetMapping("/check_login")
+    public ResponseEntity<?> checkLogin(HttpServletRequest request) {
+        Map<String, String> map = memberService.checkLogin(request);
+        if (map != null) {
+            return ResponseEntity.ok().body(map);
         }
         return ResponseEntity.badRequest().body("failed");
     }

@@ -20,13 +20,6 @@ management:
       exposure:
         include: "*"
 
-
-
-
-
-
-
-
 server:
   port: 8181
 
@@ -40,3 +33,9 @@ logging:
     org:
       hibernate:
         SQL: debug
+
+sns:
+  kakao:
+    app-key: 75ca9da2f553df0105a0728660dc7bcc
+    redirect-uri: http://localhost:8181/kakao/code
+    token-uri: https://kauth.kakao.com/oauth/token

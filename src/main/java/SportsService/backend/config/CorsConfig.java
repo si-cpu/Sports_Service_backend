@@ -7,6 +7,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * Spring 애플리케이션에서 Cross-Origin Resource Sharing(CORS)을 설정하는 구성 클래스.
  * {@link WebMvcConfigurer} 인터페이스를 구현하여 CORS 설정을 커스터마이징한다.
+ *
+ * @since 2024-10-23
+ * @author minus43
  */
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {
@@ -20,7 +23,7 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // 모든 URL 패턴에 대해 CORS 설정 적용
-                .allowedOriginPatterns("https://*", "http://*") // HTTP/HTTPS 모든 출처에서의 요청 허용
+                .allowedOrigins("http://localhost:3000")
                 .allowedMethods("*") // 모든 HTTP 메서드 허용 (GET, POST, PUT, DELETE 등)
                 .maxAge(300) // 사전 요청 결과를 300초 동안 캐시
                 .allowedHeaders("*") // 모든 요청 헤더 허용
