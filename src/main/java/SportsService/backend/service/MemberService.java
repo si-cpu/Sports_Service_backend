@@ -191,6 +191,7 @@ public class MemberService {
 
     public boolean modifyMember(SignUpRequestDto dto, HttpServletRequest request, HttpServletResponse response) {
         try {
+
             String isLogin = LoginUtils.isLogin(request);
             System.out.println(isLogin);
             User user = userRepository.findByNickName(isLogin).orElseThrow();
@@ -222,6 +223,5 @@ public class MemberService {
         } catch (Exception e) {
             return false;
         }
-
     }
 }
