@@ -1,5 +1,6 @@
 package SportsService.backend.controller;
 
+import SportsService.backend.dto.request.BoardRequestDto;
 import SportsService.backend.dto.request.ReplyRequestDto;
 import SportsService.backend.dto.response.ReplyResponseDto;
 import SportsService.backend.entity.Reply;
@@ -88,6 +89,15 @@ public class ReplyController {
         List<ReplyResponseDto> replies = replyService.findAll(boardNum);
         if (replies != null) {
             return ResponseEntity.ok().body(replies);
+        }
+        return ResponseEntity.badRequest().body("failed");
+    }
+
+    @PutMapping("/like_update/{replyNum}")
+    public ResponseEntity<String> likeUpdate(@PathVariable Long replyNum, @RequestBody ReplyRequestDto dto, HttpServletRequest request) {
+        System.out.println(1);
+        if(replyService.likeUpdate(replyNum ,dto, request)) {
+            return ResponseEntity.ok().body("success");
         }
         return ResponseEntity.badRequest().body("failed");
     }

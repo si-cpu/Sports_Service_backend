@@ -1,5 +1,6 @@
 package SportsService.backend.service;
 
+import SportsService.backend.dto.request.BoardRequestDto;
 import SportsService.backend.dto.request.ReplyRequestDto;
 import SportsService.backend.dto.response.ReplyResponseDto;
 import SportsService.backend.entity.Reply;
@@ -136,5 +137,20 @@ public class ReplyService {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public boolean likeUpdate(Long replyNum, ReplyRequestDto dto, HttpServletRequest request) {
+        try {
+            String loginUser = isLogin(request);
+            if (loginUser != null) {
+                Reply reply = replyRepository.findById(replyNum).orElseThrow();
+                reply.setGoodCount(dto.getGoodCount());
+                return true;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+
+        return false;
     }
 }

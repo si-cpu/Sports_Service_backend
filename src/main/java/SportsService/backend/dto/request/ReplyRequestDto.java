@@ -36,4 +36,9 @@ public class ReplyRequestDto {
      * 댓글 작성자의 닉네임입니다.
      */
     private String writer;
+
+    /**
+     * 댓글의 좋아요 수입니다.
+     */
+    private Long goodCount;
 }

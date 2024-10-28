@@ -64,6 +64,11 @@ public class SignUpRequestDto {
     private String klTeam;
 
     /**
+     * 사용자가 선호하는 pl-리그 팀입니다.
+     */
+    private String plTeam;
+
+    /**
      * 사용자가 선호하는 KBL 팀입니다.
      */
     private String kblTeam;
@@ -106,6 +111,7 @@ public class SignUpRequestDto {
                 .mlbTeam(mlbTeam)
                 .kboTeam(kboTeam)
                 .klTeam(klTeam)
+                .plTeam(plTeam)
                 .kblTeam(kblTeam)
                 .nbaTeam(nbaTeam)
                 .vmanTeam(vmanTeam)

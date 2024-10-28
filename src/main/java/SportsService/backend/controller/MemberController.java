@@ -129,4 +129,13 @@ public class MemberController {
         }
         return ResponseEntity.badRequest().body("failed");
     }
+
+    @PutMapping("/modify")
+    public ResponseEntity<?> modifyMember(@RequestBody SignUpRequestDto dto, HttpServletRequest request, HttpServletResponse response ) {
+        System.out.println(1);
+        if(memberService.modifyMember(dto, request, response)){
+            return ResponseEntity.ok().body("success");
+        }
+        return ResponseEntity.badRequest().body("failed");
+    }
 }
