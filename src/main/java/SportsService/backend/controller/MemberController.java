@@ -54,12 +54,12 @@ public class MemberController {
      * @param dto 닉네임을 담은 DTO 객체
      * @return 중복 여부를 담은 ResponseEntity 객체
      */
-    @PostMapping("/valid_id")
-    public ResponseEntity<String> validNickname(@RequestBody SignUpRequestDto dto) {
-        if (memberService.isValidNickname(dto)) {
-            return ResponseEntity.badRequest().body("failed");
+    @GetMapping("/valid_id")
+    public ResponseEntity<String> validNickname(@RequestParam("nick_name") String nickName) {
+        if (memberService.isValidNickname(nickName)) {
+            return ResponseEntity.ok().body("existed");
         }
-        return ResponseEntity.ok().body("success");
+        return ResponseEntity.ok().body("able");
     }
 
     /**
@@ -70,12 +70,20 @@ public class MemberController {
      * @param dto 이메일을 담은 DTO 객체
      * @return 중복 여부를 담은 ResponseEntity 객체
      */
-    @PostMapping("/valid_email")
-    public ResponseEntity<String> validEmail(@RequestBody SignUpRequestDto dto) {
-        if (memberService.isValidEmail(dto)) {
-            return ResponseEntity.badRequest().body("failed");
+    @GetMapping("/valid_email")
+    public ResponseEntity<String> validEmail(@RequestParam("email") String email) {
+        if (memberService.isValidEmail(email)) {
+            return ResponseEntity.ok().body("existed");
         }
-        return ResponseEntity.ok().body("success");
+        return ResponseEntity.ok().body("able");
+    }
+
+    @GetMapping("/valid_password")
+    public ResponseEntity<String> validPassword(@RequestParam String password, HttpServletRequest request) {
+        if(memberService.isValidPassword(password,request)){
+            return ResponseEntity.ok().body("success");
+        }
+        return ResponseEntity.ok().body("failed");
     }
 
     /**
@@ -132,7 +140,6 @@ public class MemberController {
 
     @PutMapping("/modify")
     public ResponseEntity<?> modifyMember(@RequestBody SignUpRequestDto dto, HttpServletRequest request, HttpServletResponse response ) {
-        System.out.println(1);
         if(memberService.modifyMember(dto, request, response)){
             return ResponseEntity.ok().body("success");
         }

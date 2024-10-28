@@ -66,9 +66,9 @@ public class MemberService {
      * @param dto 닉네임을 담은 DTO 객체
      * @return 닉네임이 중복되면 true, 중복되지 않으면 false
      */
-    public boolean isValidNickname(SignUpRequestDto dto) {
+    public boolean isValidNickname(String nickname) {
         try {
-            Optional<User> user = userRepository.findByNickName(dto.getNickName());
+            Optional<User> user = userRepository.findByNickName(nickname);
             return user.isPresent();
         } catch (Exception e) {
             return false;
@@ -82,9 +82,9 @@ public class MemberService {
      * @param dto 이메일을 담은 DTO 객체
      * @return 이메일이 중복되면 true, 중복되지 않으면 false
      */
-    public boolean isValidEmail(SignUpRequestDto dto) {
+    public boolean isValidEmail(String email) {
         try {
-            Optional<User> user = userRepository.findByEmail(dto.getEmail());
+            Optional<User> user = userRepository.findByEmail(email);
             return user.isPresent();
         } catch (Exception e) {
             return false;
@@ -191,14 +191,11 @@ public class MemberService {
 
     public boolean modifyMember(SignUpRequestDto dto, HttpServletRequest request, HttpServletResponse response) {
         try {
-            System.out.println(2);
+
             String isLogin = LoginUtils.isLogin(request);
             System.out.println(isLogin);
-            System.out.println(3);
             User user = userRepository.findByNickName(isLogin).orElseThrow();
-            System.out.println(4);
             user.setNickName(dto.getNickName().isBlank() ? user.getNickName() : dto.getNickName());
-            System.out.println(5);
             user.setPassword(dto.getPassword().isBlank() ? user.getPassword() : encoder.encode(dto.getPassword()));
             user.setEmail(dto.getEmail().isBlank() ? user.getEmail() : dto.getEmail());
             user.setMlbTeam(dto.getMlbTeam().isBlank() ? user.getMlbTeam() : dto.getMlbTeam());
@@ -213,6 +210,17 @@ public class MemberService {
             return true;
         }
         catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean isValidPassword(String password, HttpServletRequest request) {
+        try {
+            String isLogin=LoginUtils.isLogin(request);
+            System.out.println(isLogin);
+            User user=userRepository.findByNickName(isLogin).orElseThrow();
+            return encoder.matches(password, user.getPassword());
+        } catch (Exception e) {
             return false;
         }
     }
