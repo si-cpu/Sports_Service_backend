@@ -181,7 +181,6 @@ public class MemberService {
             map.put("nba_team",user.getNbaTeam());
             map.put("vmam_team",user.getVmanTeam());
             map.put("vwo_team",user.getVwoTeam());
-
             return map;
         } catch (Exception e) {
             return null;
@@ -198,14 +197,14 @@ public class MemberService {
             user.setNickName(dto.getNickName().isBlank() ? user.getNickName() : dto.getNickName());
             user.setPassword(dto.getPassword().isBlank() ? user.getPassword() : encoder.encode(dto.getPassword()));
             user.setEmail(dto.getEmail().isBlank() ? user.getEmail() : dto.getEmail());
-            user.setMlbTeam(dto.getMlbTeam().isBlank() ? user.getMlbTeam() : dto.getMlbTeam());
-            user.setKboTeam(dto.getKboTeam().isBlank() ? user.getKboTeam() : dto.getKboTeam());
-            user.setKlTeam(dto.getKlTeam().isBlank() ? user.getKlTeam() : dto.getKlTeam());
-            user.setPlTeam(dto.getPlTeam().isBlank() ? user.getPlTeam() : dto.getPlTeam());
-            user.setKblTeam(dto.getKblTeam().isBlank() ? user.getKblTeam() : dto.getKblTeam());
-            user.setNbaTeam(dto.getNbaTeam().isBlank() ? user.getNbaTeam() : dto.getNbaTeam());
-            user.setVmanTeam(dto.getVmanTeam().isBlank() ? user.getVmanTeam() : dto.getVmanTeam());
-            user.setVwoTeam(dto.getVwoTeam().isBlank() ? user.getVwoTeam() : dto.getVwoTeam());
+            user.setMlbTeam(dto.getMlbTeam().equals(user.getMlbTeam()) ? user.getMlbTeam() : dto.getMlbTeam());
+            user.setKboTeam(dto.getKboTeam().equals(user.getKboTeam()) ? user.getKboTeam() : dto.getKboTeam());
+            user.setKlTeam(dto.getKlTeam().equals(user.getKlTeam()) ? user.getKlTeam() : dto.getKlTeam());
+            user.setPlTeam(dto.getPlTeam().equals(user.getPlTeam()) ? user.getPlTeam() : dto.getPlTeam());
+            user.setKblTeam(dto.getKblTeam().equals(user.getKblTeam()) ? user.getKblTeam() : dto.getKblTeam());
+            user.setNbaTeam(dto.getNbaTeam().equals(user.getNbaTeam()) ? user.getNbaTeam() : dto.getNbaTeam());
+            user.setVmanTeam(dto.getVmanTeam().equals(user.getVmanTeam()) ? user.getVmanTeam() : dto.getVmanTeam());
+            user.setVwoTeam(dto.getVwoTeam().equals(user.getVwoTeam()) ? user.getVwoTeam() : dto.getVwoTeam());
             deleteCookie(request, response);
             return true;
         }
