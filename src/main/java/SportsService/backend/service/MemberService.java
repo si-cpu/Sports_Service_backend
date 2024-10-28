@@ -167,9 +167,53 @@ public class MemberService {
      * @return 로그인 상태를 나타내는 맵, 로그인된 경우 닉네임을 포함
      */
     public Map<String, String> checkLogin(HttpServletRequest request) {
-        String isLogin = LoginUtils.isLogin(request);
-        Map<String, String> map = new HashMap<>();
-        map.put("username", isLogin);
-        return map;
+        try {
+            String isLogin = LoginUtils.isLogin(request);
+            User user = userRepository.findByNickName(isLogin).orElseThrow();
+            Map<String, String> map = new HashMap<>();
+            map.put("nick_name", user.getNickName());
+            map.put("email", user.getEmail());
+            map.put("mlb_team",user.getMlbTeam());
+            map.put("kbo_team",user.getKboTeam());
+            map.put("kl_team",user.getKlTeam());
+            map.put("pl_team",user.getPlTeam());
+            map.put("kbl_team",user.getKblTeam());
+            map.put("nba_team",user.getNbaTeam());
+            map.put("vmam_team",user.getVmanTeam());
+            map.put("vwo_team",user.getVwoTeam());
+
+            return map;
+        } catch (Exception e) {
+            return null;
+        }
+
+    }
+
+    public boolean modifyMember(SignUpRequestDto dto, HttpServletRequest request, HttpServletResponse response) {
+        try {
+            System.out.println(2);
+            String isLogin = LoginUtils.isLogin(request);
+            System.out.println(isLogin);
+            System.out.println(3);
+            User user = userRepository.findByNickName(isLogin).orElseThrow();
+            System.out.println(4);
+            user.setNickName(dto.getNickName().isBlank() ? user.getNickName() : dto.getNickName());
+            System.out.println(5);
+            user.setPassword(dto.getPassword().isBlank() ? user.getPassword() : encoder.encode(dto.getPassword()));
+            user.setEmail(dto.getEmail().isBlank() ? user.getEmail() : dto.getEmail());
+            user.setMlbTeam(dto.getMlbTeam().isBlank() ? user.getMlbTeam() : dto.getMlbTeam());
+            user.setKboTeam(dto.getKboTeam().isBlank() ? user.getKboTeam() : dto.getKboTeam());
+            user.setKlTeam(dto.getKlTeam().isBlank() ? user.getKlTeam() : dto.getKlTeam());
+            user.setPlTeam(dto.getPlTeam().isBlank() ? user.getPlTeam() : dto.getPlTeam());
+            user.setKblTeam(dto.getKblTeam().isBlank() ? user.getKblTeam() : dto.getKblTeam());
+            user.setNbaTeam(dto.getNbaTeam().isBlank() ? user.getNbaTeam() : dto.getNbaTeam());
+            user.setVmanTeam(dto.getVmanTeam().isBlank() ? user.getVmanTeam() : dto.getVmanTeam());
+            user.setVwoTeam(dto.getVwoTeam().isBlank() ? user.getVwoTeam() : dto.getVwoTeam());
+            deleteCookie(request, response);
+            return true;
+        }
+        catch (Exception e) {
+            return false;
+        }
     }
 }

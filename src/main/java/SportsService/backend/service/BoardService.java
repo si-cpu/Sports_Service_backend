@@ -130,4 +130,19 @@ public class BoardService {
             return null;
         }
     }
+
+    public boolean likeViewUpdate(Long boardNum, BoardRequestDto dto, HttpServletRequest request) {
+        try {
+            String loginUser = isLogin(request);
+            if(loginUser!=null) {
+                Board board = boardRepository.findById(boardNum).orElseThrow();
+                board.setGoodCount(dto.getGoodCount());
+                board.setViewCount(board.getViewCount()+1);
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

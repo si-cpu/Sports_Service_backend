@@ -31,4 +31,9 @@ public class BoardRequestDto {
      * 게시글의 내용입니다.
      */
     private String content;
+
+    /**
+     * 게시글의 좋아요 수입니다.
+     */
+    private Long goodCount;
 }

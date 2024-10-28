@@ -89,4 +89,12 @@ public class BoardController {
         }
         return ResponseEntity.badRequest().body("failed");
     }
+
+    @PutMapping("/like_view_update/{boardNum}")
+    public ResponseEntity<String> likeViewUpdate(@PathVariable Long boardNum, @RequestBody BoardRequestDto dto, HttpServletRequest request) {
+        if(boardService.likeViewUpdate(boardNum ,dto, request)) {
+            return ResponseEntity.ok().body("success");
+        }
+        return ResponseEntity.badRequest().body("failed");
+    }
 }
