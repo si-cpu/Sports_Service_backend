@@ -102,4 +102,8 @@ public class Board {
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonIgnore
     private List<Reply> replies = new ArrayList<>();
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
+    private List<LikeBoard> likes = new ArrayList<>();
 }

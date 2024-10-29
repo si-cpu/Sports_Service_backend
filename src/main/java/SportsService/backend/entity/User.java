@@ -156,5 +156,11 @@ public class User {
     @JsonIgnore
     private List<Reply> replies = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
+    private List<LikeBoard> likeBoardList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
+    private List<LikeReply> likeReplyList = new ArrayList<>();
 }
