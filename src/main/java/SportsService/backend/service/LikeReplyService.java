@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +23,7 @@ public class LikeReplyService {
     private final UserRepository userRepository;
     private final ReplyRepository replyRepository;
     private final BoardRepository boardRepository;
+
 
     public boolean makeLike(Long replyNum, HttpServletRequest request) {
         try {

@@ -121,7 +121,10 @@ public class ReplyController {
         List<Long> replyLikes = likeReplyService.isLike(boardNum, request);
         if(replyLikes!=null) {
             return ResponseEntity.ok().body(replyLikes);
+
+
         }
+        //좋아요 취소 필요(기존에 좋아요 눌렀을 것)
         return ResponseEntity.badRequest().body("failed");
     }
 }
