@@ -5,6 +5,7 @@ import SportsService.backend.entity.Reply;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Reply 엔티티에 대한 데이터베이스 작업을 처리하는 리포지토리 인터페이스입니다.
@@ -21,4 +22,5 @@ import java.util.List;
  */
 public interface ReplyRepository extends JpaRepository<Reply, Long> {
 
+    List<Reply> findByBoard(Board board);
 }

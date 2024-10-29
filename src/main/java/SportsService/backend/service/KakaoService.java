@@ -91,7 +91,6 @@ public class KakaoService {
     public boolean kakaocode(String code, HttpServletRequest request, HttpServletResponse response, String autoLogin) {
         String accessToken = getAccessToken(code);
         KakaoUserResponseDto kakaoUser = getUserInfo(accessToken);
-
         if (!userRepository.findByEmail(kakaoUser.getAccount().getEmail()).isPresent()) {
             memberService.signUp(SignUpRequestDto.builder()
                     .nickName(kakaoUser.getProperties().getNickname())
@@ -101,6 +100,7 @@ public class KakaoService {
                     .build()
             );
         }
+
         LoginRequestDto kakaoUserLoginDto = LoginRequestDto.builder()
                 .nickName(kakaoUser.getProperties().getNickname())
                 .autoLogin(autoLogin)

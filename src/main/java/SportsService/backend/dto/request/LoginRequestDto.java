@@ -33,4 +33,8 @@ public class LoginRequestDto {
      * "true"이면 자동 로그인을 설정합니다.
      */
     private String autoLogin;
+
+    private SignUpRequestDto.LoginMethod loginMethod;
+
+    private String email;
 }

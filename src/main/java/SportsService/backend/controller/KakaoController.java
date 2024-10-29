@@ -77,7 +77,6 @@ public class KakaoController {
     @GetMapping("/code")
     public ResponseEntity<?> kakaocode(@RequestParam String code, HttpServletRequest request, HttpServletResponse response) {
         if (kakaoService.kakaocode(code, request, response, autoLogin)) {
-
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(URI.create(requestUrl)); // 성공 시 리디렉션할 URL 설정
             return new ResponseEntity<>(headers, HttpStatus.FOUND);

@@ -116,11 +116,13 @@ public class ReplyController {
         return ResponseEntity.badRequest().body("failed");
     }
 
-    @GetMapping("/like_status/{replyNum}")
-    public ResponseEntity<?> likeStatus(@PathVariable Long replyNum, HttpServletRequest request) {
-        if(likeReplyService.makeLike(replyNum, request)) {
-            //좋아요 필요(기존에 좋아요 없었거나, 좋아요 취소 눌렀을 것)
-            return ResponseEntity.ok().body("success");
+    @GetMapping("/like_status/{boardNum}")
+    public ResponseEntity<?> likeStatus(@PathVariable Long boardNum, HttpServletRequest request) {
+        List<Long> replyLikes = likeReplyService.isLike(boardNum, request);
+        if(replyLikes!=null) {
+            return ResponseEntity.ok().body(replyLikes);
+
+
         }
         //좋아요 취소 필요(기존에 좋아요 눌렀을 것)
         return ResponseEntity.badRequest().body("failed");
