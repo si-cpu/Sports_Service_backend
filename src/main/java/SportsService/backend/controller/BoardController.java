@@ -93,7 +93,7 @@ public class BoardController {
         return ResponseEntity.badRequest().body("failed");
     }
     @PutMapping("/view/{boardNum}")
-    public ResponseEntity<String> viewUpdate(@PathVariable Long boardNum, HttpServletRequest request) {
+    public ResponseEntity<String> viewUpdate(@PathVariable Long boardNum) {
         if(boardService.viewUpdate(boardNum)){
             return ResponseEntity.ok().body("success");
         }

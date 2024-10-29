@@ -1,5 +1,6 @@
 package SportsService.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,10 +21,14 @@ public class LikeBoard {
     private Long likeBoardNum;
 
 
+    @ToString.Exclude
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "board_num", nullable = false)
     private Board board;
 
+    @ToString.Exclude
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_key", nullable = false)
     private User user;

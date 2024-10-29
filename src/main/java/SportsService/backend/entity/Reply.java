@@ -75,6 +75,8 @@ public class Reply {
      *
      * @see User
      */
+    @ToString.Exclude
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_key", nullable = false)
     private User user;
@@ -85,10 +87,13 @@ public class Reply {
      *
      * @see Board
      */
+    @ToString.Exclude
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "board_num", nullable = false)
     private Board board;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "reply", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonIgnore
     private List<LikeReply> likes = new ArrayList<>();

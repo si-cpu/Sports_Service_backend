@@ -88,6 +88,7 @@ public class Board {
      *
      * @see User
      */
+    @ToString.Exclude
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "user_key", nullable = false)
@@ -99,10 +100,12 @@ public class Board {
      *
      * @see Reply
      */
+    @ToString.Exclude
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonIgnore
     private List<Reply> replies = new ArrayList<>();
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonIgnore
     private List<LikeBoard> likes = new ArrayList<>();
