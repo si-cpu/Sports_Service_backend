@@ -3,12 +3,14 @@ package SportsService.backend.controller;
 import SportsService.backend.dto.request.BoardRequestDto;
 import SportsService.backend.dto.response.BoardResponseDto;
 import SportsService.backend.service.BoardService;
+import SportsService.backend.service.LikeBoardService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 게시글 관련 요청을 처리하는 컨트롤러 클래스입니다.
@@ -26,6 +28,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+    private final LikeBoardService likeBoardService;
 
     /**
      * 게시글 저장 요청을 처리하는 메서드입니다.
@@ -89,12 +92,40 @@ public class BoardController {
         }
         return ResponseEntity.badRequest().body("failed");
     }
-
-    @PutMapping("/like_view_update/{boardNum}")
-    public ResponseEntity<String> likeViewUpdate(@PathVariable Long boardNum, @RequestBody BoardRequestDto dto, HttpServletRequest request) {
-        if(boardService.likeViewUpdate(boardNum ,dto, request)) {
+    @PutMapping("/view/{boardNum}")
+    public ResponseEntity<String> viewUpdate(@PathVariable Long boardNum) {
+        if(boardService.viewUpdate(boardNum)){
             return ResponseEntity.ok().body("success");
         }
         return ResponseEntity.badRequest().body("failed");
+    }
+
+    @PostMapping("/like/{boardNum}")
+    public ResponseEntity<String> likeUpdate(@PathVariable Long boardNum, HttpServletRequest request) {
+        if(likeBoardService.makeLike(boardNum, request)) {
+            if(boardService.makeLike(boardNum)){
+                return ResponseEntity.ok().body("success");
+            }
+        }
+        return ResponseEntity.badRequest().body("failed");
+    }
+    @DeleteMapping("/unlike/{boardNum}")
+    public ResponseEntity<String> unlikeUpdate(@PathVariable Long boardNum, HttpServletRequest request) {
+        if(likeBoardService.removeLike(boardNum, request)) {
+            if(boardService.removeLike(boardNum)){
+                return ResponseEntity.ok().body("success");
+            }
+        }
+        return ResponseEntity.badRequest().body("failed");
+    }
+
+    @GetMapping("/like_status/{boardNum}")
+    public ResponseEntity<String> likeStatus(@PathVariable Long boardNum, HttpServletRequest request) {
+        if(likeBoardService.isLike(boardNum, request)){
+            //좋아요 필요(기존에 좋아요 없었거나, 좋아요 취소 눌렀을 것)
+            return ResponseEntity.ok().body("success");
+        }
+        //좋아요 취소 필요(기존에 좋아요 눌렀을 것)
+        return ResponseEntity.ok().body("failed");
     }
 }

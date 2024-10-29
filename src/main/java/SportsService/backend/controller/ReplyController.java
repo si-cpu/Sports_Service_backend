@@ -4,6 +4,7 @@ import SportsService.backend.dto.request.BoardRequestDto;
 import SportsService.backend.dto.request.ReplyRequestDto;
 import SportsService.backend.dto.response.ReplyResponseDto;
 import SportsService.backend.entity.Reply;
+import SportsService.backend.service.LikeReplyService;
 import SportsService.backend.service.ReplyService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ import java.util.List;
 public class ReplyController {
 
     private final ReplyService replyService;
+    private final LikeReplyService likeReplyService;
 
     /**
      * 댓글 저장 요청을 처리하는 메서드입니다.
@@ -93,12 +95,34 @@ public class ReplyController {
         return ResponseEntity.badRequest().body("failed");
     }
 
-    @PutMapping("/like_update/{replyNum}")
-    public ResponseEntity<String> likeUpdate(@PathVariable Long replyNum, @RequestBody ReplyRequestDto dto, HttpServletRequest request) {
-        System.out.println(1);
-        if(replyService.likeUpdate(replyNum ,dto, request)) {
+
+    @PostMapping("/like/{replyNum}")
+    public ResponseEntity<String> likeUpdate(@PathVariable Long replyNum, HttpServletRequest request) {
+        if(likeReplyService.makeLike(replyNum, request)) {
+            if(replyService.makeLike(replyNum)){
+                return ResponseEntity.ok().body("success");
+            }
+        }
+        return ResponseEntity.badRequest().body("failed");
+    }
+
+    @DeleteMapping("/unlike/{replyNum}")
+    public ResponseEntity<String> unlikeUpdate(@PathVariable Long replyNum, HttpServletRequest request) {
+        if(likeReplyService.removeLike(replyNum, request)) {
+            if(replyService.removeLike(replyNum)){
+                return ResponseEntity.ok().body("success");
+            }
+        }
+        return ResponseEntity.badRequest().body("failed");
+    }
+
+    @GetMapping("/like_status/{replyNum}")
+    public ResponseEntity<?> likeStatus(@PathVariable Long replyNum, HttpServletRequest request) {
+        if(likeReplyService.makeLike(replyNum, request)) {
+            //좋아요 필요(기존에 좋아요 없었거나, 좋아요 취소 눌렀을 것)
             return ResponseEntity.ok().body("success");
         }
+        //좋아요 취소 필요(기존에 좋아요 눌렀을 것)
         return ResponseEntity.badRequest().body("failed");
     }
 }

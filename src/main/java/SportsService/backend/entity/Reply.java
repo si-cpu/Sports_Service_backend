@@ -1,11 +1,14 @@
 package SportsService.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 댓글 엔티티로, Sports Service 애플리케이션에서 하나의 댓글을 나타냅니다.
@@ -72,6 +75,8 @@ public class Reply {
      *
      * @see User
      */
+    @ToString.Exclude
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_key", nullable = false)
     private User user;
@@ -82,7 +87,14 @@ public class Reply {
      *
      * @see Board
      */
+    @ToString.Exclude
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "board_num", nullable = false)
     private Board board;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "reply", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
+    private List<LikeReply> likes = new ArrayList<>();
 }

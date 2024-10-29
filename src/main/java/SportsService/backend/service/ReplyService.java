@@ -139,18 +139,23 @@ public class ReplyService {
         }
     }
 
-    public boolean likeUpdate(Long replyNum, ReplyRequestDto dto, HttpServletRequest request) {
+    public boolean makeLike(Long replyNum) {
         try {
-            String loginUser = isLogin(request);
-            if (loginUser != null) {
-                Reply reply = replyRepository.findById(replyNum).orElseThrow();
-                reply.setGoodCount(dto.getGoodCount());
-                return true;
-            }
+            Reply reply = replyRepository.findById(replyNum).orElseThrow();
+            reply.setGoodCount(reply.getGoodCount() + 1);
+            return true;
         } catch (Exception e) {
             return false;
         }
+    }
 
-        return false;
+    public boolean removeLike(Long replyNum) {
+        try {
+            Reply reply = replyRepository.findById(replyNum).orElseThrow();
+            reply.setGoodCount(reply.getGoodCount() - 1);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

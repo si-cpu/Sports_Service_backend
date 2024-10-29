@@ -131,16 +131,33 @@ public class BoardService {
         }
     }
 
-    public boolean likeViewUpdate(Long boardNum, BoardRequestDto dto, HttpServletRequest request) {
+    public boolean viewUpdate(Long boardNum) {
         try {
-            String loginUser = isLogin(request);
-            if(loginUser!=null) {
-                Board board = boardRepository.findById(boardNum).orElseThrow();
-                board.setGoodCount(dto.getGoodCount());
-                board.setViewCount(board.getViewCount()+1);
-                return true;
-            }
+            Board board = boardRepository.findById(boardNum).orElseThrow();
+            board.setViewCount(board.getViewCount()+1);
+            return true;
+        } catch (Exception e) {
             return false;
+        }
+
+    }
+
+
+    public boolean makeLike(Long boardNum) {
+        try {
+            Board board = boardRepository.findById(boardNum).orElseThrow();
+            board.setGoodCount(board.getGoodCount()+1);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean removeLike(Long boardNum) {
+        try {
+            Board board = boardRepository.findById(boardNum).orElseThrow();
+            board.setGoodCount(board.getGoodCount()-1);
+            return true;
         } catch (Exception e) {
             return false;
         }
