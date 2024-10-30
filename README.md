@@ -103,3 +103,4 @@ cd Sports_Service_backend
 - reply_num (FK): INT, 댓글 번호
 
 
+
