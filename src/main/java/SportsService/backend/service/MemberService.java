@@ -223,4 +223,15 @@ public class MemberService {
             return false;
         }
     }
+
+    public boolean deleteMember(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String isLogin = LoginUtils.isLogin(request);
+            userRepository.delete(userRepository.findByNickName(isLogin).orElseThrow());
+            deleteCookie(request, response);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
