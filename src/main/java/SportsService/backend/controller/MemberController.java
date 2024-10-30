@@ -145,4 +145,12 @@ public class MemberController {
         }
         return ResponseEntity.badRequest().body("failed");
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteMember( HttpServletRequest request, HttpServletResponse response ) {
+        if(memberService.deleteMember(request,response)){
+            return ResponseEntity.ok().body("success");
+        }
+        return ResponseEntity.badRequest().body("failed");
+    }
 }
