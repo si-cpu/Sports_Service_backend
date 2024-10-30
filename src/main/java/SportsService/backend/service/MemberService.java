@@ -179,7 +179,7 @@ public class MemberService {
             map.put("pl_team",user.getPlTeam());
             map.put("kbl_team",user.getKblTeam());
             map.put("nba_team",user.getNbaTeam());
-            map.put("vmam_team",user.getVmanTeam());
+            map.put("vman_team",user.getVmanTeam());
             map.put("vwo_team",user.getVwoTeam());
             return map;
         } catch (Exception e) {
