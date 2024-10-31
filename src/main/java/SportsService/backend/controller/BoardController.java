@@ -92,6 +92,14 @@ public class BoardController {
         }
         return ResponseEntity.badRequest().body("failed");
     }
+
+    /**
+     * 게시글의 조회수를 업데이트하는 메서드입니다.
+     * 지정된 게시글 번호의 조회수를 증가시킵니다.
+     *
+     * @param boardNum 조회수를 증가시킬 게시글의 고유 식별자
+     * @return 업데이트 성공 시 "success" 메시지를 반환, 실패 시 "failed" 메시지를 반환
+     */
     @PutMapping("/view/{boardNum}")
     public ResponseEntity<String> viewUpdate(@PathVariable Long boardNum) {
         if(boardService.viewUpdate(boardNum)){
@@ -100,6 +108,14 @@ public class BoardController {
         return ResponseEntity.badRequest().body("failed");
     }
 
+    /**
+     * 게시글에 좋아요를 추가하는 메서드입니다.
+     * 사용자가 특정 게시글에 좋아요를 누를 때 호출됩니다.
+     *
+     * @param boardNum 좋아요를 추가할 게시글의 고유 식별자
+     * @param request 사용자 인증 정보가 포함된 HTTP 요청 객체
+     * @return 좋아요 추가 성공 시 "success" 메시지를 반환, 실패 시 "failed" 메시지를 반환
+     */
     @PostMapping("/like/{boardNum}")
     public ResponseEntity<String> likeUpdate(@PathVariable Long boardNum, HttpServletRequest request) {
         if(likeBoardService.makeLike(boardNum, request)) {
@@ -109,6 +125,15 @@ public class BoardController {
         }
         return ResponseEntity.badRequest().body("failed");
     }
+
+    /**
+     * 게시글의 좋아요를 취소하는 메서드입니다.
+     * 사용자가 이전에 누른 좋아요를 취소할 때 호출됩니다.
+     *
+     * @param boardNum 좋아요를 취소할 게시글의 고유 식별자
+     * @param request 사용자 인증 정보가 포함된 HTTP 요청 객체
+     * @return 좋아요 취소 성공 시 "success" 메시지를 반환, 실패 시 "failed" 메시지를 반환
+     */
     @DeleteMapping("/unlike/{boardNum}")
     public ResponseEntity<String> unlikeUpdate(@PathVariable Long boardNum, HttpServletRequest request) {
         if(likeBoardService.removeLike(boardNum, request)) {
@@ -119,6 +144,15 @@ public class BoardController {
         return ResponseEntity.badRequest().body("failed");
     }
 
+    /**
+     * 사용자가 특정 게시글에 좋아요를 눌렀는지 확인하는 메서드입니다.
+     * 게시글의 좋아요 상태를 조회합니다.
+     *
+     * @param boardNum 좋아요 상태를 확인할 게시글의 고유 식별자
+     * @param request 사용자 인증 정보가 포함된 HTTP 요청 객체
+     * @return 좋아요가 필요한 경우(좋아요가 없거나 취소된 상태) "success",
+     *         좋아요 취소가 필요한 경우(이미 좋아요가 있는 상태) "failed" 메시지를 반환
+     */
     @GetMapping("/like_status/{boardNum}")
     public ResponseEntity<String> likeStatus(@PathVariable Long boardNum, HttpServletRequest request) {
         if(likeBoardService.isLike(boardNum, request)){

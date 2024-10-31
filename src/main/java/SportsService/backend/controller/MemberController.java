@@ -78,6 +78,14 @@ public class MemberController {
         return ResponseEntity.ok().body("able");
     }
 
+    /**
+     * 비밀번호 유효성을 검증하는 메서드입니다.
+     * 현재 로그인한 사용자의 비밀번호가 입력된 비밀번호와 일치하는지 확인합니다.
+     *
+     * @param password 검증할 비밀번호
+     * @param request 현재 로그인한 사용자의 정보를 포함하는 HTTP 요청 객체
+     * @return ResponseEntity<String> 비밀번호가 일치하면 "success", 불일치하면 "failed" 메시지를 반환
+     */
     @GetMapping("/valid_password")
     public ResponseEntity<String> validPassword(@RequestParam String password, HttpServletRequest request) {
         if(memberService.isValidPassword(password,request)){
@@ -138,6 +146,15 @@ public class MemberController {
         return ResponseEntity.badRequest().body("failed");
     }
 
+    /**
+     * 회원 정보를 수정하는 메서드입니다.
+     * 현재 로그인한 사용자의 정보를 전달받은 새로운 정보로 업데이트합니다.
+     *
+     * @param dto 수정할 회원 정보가 담긴 DTO 객체
+     * @param request 현재 로그인한 사용자의 정보를 포함하는 HTTP 요청 객체
+     * @param response 쿠키 정보를 업데이트하기 위한 HTTP 응답 객체
+     * @return ResponseEntity<?> 수정 성공 시 "success", 실패 시 "failed" 메시지를 반환
+     */
     @PutMapping("/modify")
     public ResponseEntity<?> modifyMember(@RequestBody SignUpRequestDto dto, HttpServletRequest request, HttpServletResponse response ) {
         if(memberService.modifyMember(dto, request, response)){
@@ -146,6 +163,14 @@ public class MemberController {
         return ResponseEntity.badRequest().body("failed");
     }
 
+    /**
+     * 회원 탈퇴를 처리하는 메서드입니다.
+     * 현재 로그인한 사용자의 계정을 삭제하고 로그아웃 처리합니다.
+     *
+     * @param request 현재 로그인한 사용자의 정보를 포함하는 HTTP 요청 객체
+     * @param response 쿠키를 삭제하기 위한 HTTP 응답 객체
+     * @return ResponseEntity<String> 탈퇴 성공 시 "success", 실패 시 "failed" 메시지를 반환
+     */
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteMember( HttpServletRequest request, HttpServletResponse response ) {
         if(memberService.deleteMember(request,response)){

@@ -95,7 +95,14 @@ public class ReplyController {
         return ResponseEntity.badRequest().body("failed");
     }
 
-
+    /**
+     * 댓글에 좋아요를 추가하는 메서드입니다.
+     * 사용자가 특정 댓글에 좋아요를 누를 때 호출됩니다.
+     *
+     * @param replyNum 좋아요를 추가할 댓글의 고유 식별자
+     * @param request 사용자 인증 정보가 포함된 HTTP 요청 객체
+     * @return ResponseEntity<String> 좋아요 추가 성공 시 "success", 실패 시 "failed" 메시지를 반환
+     */
     @PostMapping("/like/{replyNum}")
     public ResponseEntity<String> likeUpdate(@PathVariable Long replyNum, HttpServletRequest request) {
         if(likeReplyService.makeLike(replyNum, request)) {
@@ -106,6 +113,14 @@ public class ReplyController {
         return ResponseEntity.badRequest().body("failed");
     }
 
+    /**
+     * 댓글의 좋아요를 취소하는 메서드입니다.
+     * 사용자가 이전에 누른 좋아요를 취소할 때 호출됩니다.
+     *
+     * @param replyNum 좋아요를 취소할 댓글의 고유 식별자
+     * @param request 사용자 인증 정보가 포함된 HTTP 요청 객체
+     * @return ResponseEntity<String> 좋아요 취소 성공 시 "success", 실패 시 "failed" 메시지를 반환
+     */
     @DeleteMapping("/unlike/{replyNum}")
     public ResponseEntity<String> unlikeUpdate(@PathVariable Long replyNum, HttpServletRequest request) {
         if(likeReplyService.removeLike(replyNum, request)) {
@@ -116,6 +131,15 @@ public class ReplyController {
         return ResponseEntity.badRequest().body("failed");
     }
 
+    /**
+     * 특정 게시글의 댓글들에 대한 사용자의 좋아요 상태를 조회하는 메서드입니다.
+     * 현재 사용자가 좋아요를 누른 댓글들의 목록을 반환합니다.
+     *
+     * @param boardNum 조회할 게시글의 고유 식별자
+     * @param request 사용자 인증 정보가 포함된 HTTP 요청 객체
+     * @return ResponseEntity<?> 성공 시 사용자가 좋아요를 누른 댓글 번호 목록을 반환,
+     *         실패 시 "failed" 메시지를 반환
+     */
     @GetMapping("/like_status/{boardNum}")
     public ResponseEntity<?> likeStatus(@PathVariable Long boardNum, HttpServletRequest request) {
         List<Long> replyLikes = likeReplyService.isLike(boardNum, request);
