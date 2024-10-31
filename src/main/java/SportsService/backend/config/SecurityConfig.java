@@ -25,8 +25,8 @@ public class SecurityConfig {
      * CSRF 보호를 비활성화하고, 모든 요청을 인증 없이 허용하는 설정을 구성합니다.
      *
      * @param http 스프링 시큐리티의 HTTP 보안 설정을 위한 객체
-     * @return SecurityFilterChain 객체
-     * @throws Exception 설정 중 예외 발생 시 처리
+     * @return SecurityFilterChain 구성된 보안 필터 체인 객체로, 애플리케이션의 보안 정책을 적용합니다
+     * @throws Exception 보안 구성 중 발생할 수 있는 인증/인가 관련 예외
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -46,7 +46,7 @@ public class SecurityConfig {
      * 비밀번호 암호화를 위한 BCryptPasswordEncoder 빈을 생성합니다.
      * 회원가입 시 비밀번호를 암호화하는 데 사용됩니다.
      *
-     * @return PasswordEncoder 객체
+     * @return PasswordEncoder BCrypt 알고리즘을 사용하는 비밀번호 암호화 인코더
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
