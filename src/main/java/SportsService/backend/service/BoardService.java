@@ -131,6 +131,12 @@ public class BoardService {
         }
     }
 
+    /**
+     * 게시글의 조회수를 1 증가시키는 메서드입니다.
+     *
+     * @param boardNum 조회수를 증가시킬 게시글의 고유 식별자
+     * @return 조회수 증가 성공 시 true, 실패 시 false
+     */
     public boolean viewUpdate(Long boardNum) {
         try {
             Board board = boardRepository.findById(boardNum).orElseThrow();
@@ -139,10 +145,15 @@ public class BoardService {
         } catch (Exception e) {
             return false;
         }
-
     }
 
-
+    /**
+     * 게시글의 좋아요 수를 1 증가시키는 메서드입니다.
+     * 사용자가 게시글에 좋아요를 눌렀을 때 호출됩니다.
+     *
+     * @param boardNum 좋아요 수를 증가시킬 게시글의 고유 식별자
+     * @return 좋아요 수 증가 성공 시 true, 실패 시 false
+     */
     public boolean makeLike(Long boardNum) {
         try {
             Board board = boardRepository.findById(boardNum).orElseThrow();
@@ -153,6 +164,13 @@ public class BoardService {
         }
     }
 
+    /**
+     * 게시글의 좋아요 수를 1 감소시키는 메서드입니다.
+     * 사용자가 게시글의 좋아요를 취소했을 때 호출됩니다.
+     *
+     * @param boardNum 좋아요 수를 감소시킬 게시글의 고유 식별자
+     * @return 좋아요 수 감소 성공 시 true, 실패 시 false
+     */
     public boolean removeLike(Long boardNum) {
         try {
             Board board = boardRepository.findById(boardNum).orElseThrow();

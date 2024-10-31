@@ -19,9 +19,17 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * 회원 관련 서비스 클래스입니다.
- * 회원가입 로직을 처리하고, 사용자의 정보를 데이터베이스에 저장합니다.
- * 또한, 로그인 시 사용자의 인증을 수행하고, 세션 및 쿠키 설정을 관리합니다.
+ * 회원 관련 기능을 처리하는 서비스 클래스입니다.
+ * 회원가입, 로그인, 회원정보 수정, 회원탈퇴 등의 기능을 제공합니다.
+ *
+ * <p>주요 기능:</p>
+ * <ul>
+ *   <li>회원가입 및 중복 검사</li>
+ *   <li>로그인 인증 및 세션 관리</li>
+ *   <li>회원정보 수정</li>
+ *   <li>회원탈퇴</li>
+ *   <li>로그인 상태 확인</li>
+ * </ul>
  *
  * @author minus43
  * @since 2024-10-23
@@ -63,8 +71,8 @@ public class MemberService {
      * 닉네임 중복 여부를 확인하는 메서드입니다.
      * 데이터베이스에서 해당 닉네임을 가진 사용자가 있는지 확인합니다.
      *
-     * @param dto 닉네임을 담은 DTO 객체
-     * @return 닉네임이 중복되면 true, 중복되지 않으면 false
+     * @param nickname 중복 확인할 닉네임
+     * @return 중복된 닉네임이 존재하면 true, 없으면 false
      */
     public boolean isValidNickname(String nickname) {
         try {
@@ -79,8 +87,8 @@ public class MemberService {
      * 이메일 중복 여부를 확인하는 메서드입니다.
      * 데이터베이스에서 해당 이메일을 가진 사용자가 있는지 확인합니다.
      *
-     * @param dto 이메일을 담은 DTO 객체
-     * @return 이메일이 중복되면 true, 중복되지 않으면 false
+     * @param email 중복 확인할 이메일
+     * @return 중복된 이메일이 존재하면 true, 없으면 false
      */
     public boolean isValidEmail(String email) {
         try {
