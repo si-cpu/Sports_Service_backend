@@ -1,6 +1,5 @@
 package SportsService.backend.service;
 
-import SportsService.backend.dto.request.BoardRequestDto;
 import SportsService.backend.dto.request.ReplyRequestDto;
 import SportsService.backend.dto.response.ReplyResponseDto;
 import SportsService.backend.entity.Reply;

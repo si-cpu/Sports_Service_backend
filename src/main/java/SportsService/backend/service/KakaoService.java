@@ -1,6 +1,5 @@
 package SportsService.backend.service;
 
-import SportsService.backend.controller.MemberController;
 import SportsService.backend.dto.request.LoginRequestDto;
 import SportsService.backend.dto.request.SignUpRequestDto;
 import SportsService.backend.dto.response.KakaoUserResponseDto;

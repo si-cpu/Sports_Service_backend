@@ -1,9 +1,7 @@
 package SportsService.backend.controller;
 
-import SportsService.backend.dto.request.BoardRequestDto;
 import SportsService.backend.dto.request.ReplyRequestDto;
 import SportsService.backend.dto.response.ReplyResponseDto;
-import SportsService.backend.entity.Reply;
 import SportsService.backend.service.LikeReplyService;
 import SportsService.backend.service.ReplyService;
 import jakarta.servlet.http.HttpServletRequest;
