@@ -93,6 +93,12 @@ public class Reply {
     @JoinColumn(name = "board_num", nullable = false)
     private Board board;
 
+    /**
+     * 이 댓글에 대한 좋아요 정보 목록입니다.
+     * LikeReply 엔티티와 일대다(1:N) 관계를 가지며, 댓글이 삭제될 경우 관련 좋아요 정보도 함께 삭제됩니다.
+     *
+     * @see LikeReply
+     */
     @ToString.Exclude
     @OneToMany(mappedBy = "reply", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonIgnore

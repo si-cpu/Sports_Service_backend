@@ -159,11 +159,23 @@ public class User {
     @JsonIgnore
     private List<Reply> replies = new ArrayList<>();
 
+    /**
+     * 사용자가 좋아요를 누른 게시글 정보 목록입니다.
+     * LikeBoard 엔티티와 일대다(1:N) 관계를 가지며, 사용자가 삭제될 경우 관련 좋아요 정보도 함께 삭제됩니다.
+     *
+     * @see LikeBoard
+     */
     @ToString.Exclude
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonIgnore
     private List<LikeBoard> likeBoardList = new ArrayList<>();
 
+    /**
+     * 사용자가 좋아요를 누른 댓글 정보 목록입니다.
+     * LikeReply 엔티티와 일대다(1:N) 관계를 가지며, 사용자가 삭제될 경우 관련 좋아요 정보도 함께 삭제됩니다.
+     *
+     * @see LikeReply
+     */
     @ToString.Exclude
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonIgnore
