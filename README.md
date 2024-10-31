@@ -1,7 +1,7 @@
 # Sports Service Backend
 
-스포츠 서비스를 위한 백엔드 API 서버입니다. 회원 관리, 게시판, 댓글 기능을 제공합니다.
-
+스포츠 서비스를 위한 백엔드 API 서버입니다. 회원 관리, 게시판, 댓글 기능을 제공합니다.  
+서비스 자체는 [여기](https://github.com/si-cpu/Sports_Service_React?tab=readme-ov-file)서 확인하세요
 ## 기술 스택
 
 - Java 17
